@@ -1,0 +1,21 @@
+---
+- name: Create grafana directories
+  file:
+    path: /data/grafana
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: "0775"
+
+- name: Start a grafana container
+  docker_container:
+    name: grafana
+    image: grafana/grafana
+    state: started
+    restart_policy: unless-stopped
+    user: "{{ autouser.uid }}"
+    volumes:
+      - /data/grafana:/var/lib/grafana
+    env:
+      GF_SERVER_ROOT_URL: http://{{ ansible_hostname }}/grafana
+  notify: Restart reproxy
