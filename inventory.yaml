@@ -1,0 +1,22 @@
+---
+home:
+  hosts:
+    helium:
+      apt_repo_arch: amd64
+      networks:
+        home:
+          network: home
+          mac: '6c:0b:84:e1:90:3f'
+          addresses:
+            - 10.0.0.101
+            - "{{ dns }}"
+          dev: home
+    neon:
+      apt_repo_arch: arm64
+      networks:
+        home_wifi:
+          network: home
+          mac: 'b8:27:eb:f3:30:9a'
+          addresses:
+            - 10.0.0.102
+          dev: wlan0
