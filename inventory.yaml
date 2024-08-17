@@ -1,5 +1,5 @@
 ---
-home:
+servers:
   hosts:
     helium:
       apt_repo_arch: amd64
@@ -20,3 +20,7 @@ home:
           addresses:
             - 10.0.0.102
           dev: wlan0
+
+storages:
+  hosts:
+    argon:
