@@ -1,0 +1,35 @@
+---
+- name: Create and configure users
+  user:
+    name: "{{ item.username }}"
+    comment: "{{ item.comment }}"
+    uid: "{{ item.uid }}"
+    groups: "{{ item.groups }}"
+    append: yes
+  with_items: "{{ users }}"
+  when: item.active
+  loop_control:
+    label: "{{ item.username }}"
+
+- name: Set up SSH public keys for users
+  authorized_key:
+    user: "{{ item.username }}"
+    key: "{{ item.public_key }}"
+    state: present
+    exclusive: true
+  with_items: "{{ users }}"
+  when: item.active
+  loop_control:
+    label: "{{ item.username }}"
+
+- name: Install SSH private keys for users
+  copy:
+    content: "{{ item.private_key }}"
+    dest: /home/{{ item.username }}/.ssh/id_ed25519
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+    mode: "0600"
+  with_items: "{{ users }}"
+  when: item.private_key is defined
+  loop_control:
+    label: "{{ item.username }}"

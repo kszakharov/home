@@ -1,0 +1,12 @@
+---
+- name: Include common system configuration tasks
+  include_tasks: common.yaml
+
+- name: Include shell alias configuration tasks
+  include_tasks: aliases.yaml
+
+- name: Include user account management tasks
+  include_tasks: user.yaml
+
+- name: Include network configuration tasks
+  include_tasks: network.yaml

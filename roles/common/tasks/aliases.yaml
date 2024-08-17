@@ -1,0 +1,5 @@
+---
+- name: Configure system-wide shell aliases
+  copy:
+    src: aliases.sh
+    dest: /etc/profile.d/aliases.sh

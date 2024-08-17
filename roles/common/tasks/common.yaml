@@ -1,0 +1,9 @@
+---
+- name: Configure system timezone (set {{ timezone }})
+  timezone:
+    name: "{{ timezone }}"
+
+- name: Install essential system packages
+  package:
+    name: "{{ common_packages }}"
+    state: present

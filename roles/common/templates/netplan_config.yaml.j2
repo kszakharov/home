@@ -1,0 +1,40 @@
+network:
+  version: 2
+{% if networks.home is defined  %}
+  ethernets:
+    {{ networks.home.dev }}:
+      match:
+        macaddress: {{ networks.home.mac }}
+      set-name: {{ networks.home.dev }}
+      addresses: 
+{% for address in networks.home.addresses %}
+        - {{ address }}{{ network_settings.home.cidr }}
+{% endfor %}
+      nameservers:
+        addresses:
+          - {{ networks.home.dns | default(network_settings.home.dns) }}
+        search:
+          - {{ networks.home.domain | default(network_settings.home.domain) }}
+      routes:
+        - to: default
+          via: {{ networks.home.gateway | default(network_settings.home.gateway) }}
+{% endif %}
+{% if networks.home_wifi is defined  %}
+  wifis:
+    {{ networks.home_wifi.dev }}:
+      addresses: 
+{% for address in networks.home_wifi.addresses %}
+        - {{ address }}{{ network_settings.home_wifi.cidr }}
+{% endfor %}
+      access-points:
+        {{ network_settings.home_wifi.ssid }}:
+          password: {{ network_settings.home_wifi.password }}
+      nameservers:
+        addresses:
+          - {{ networks.home_wifi.dns | default(network_settings.home_wifi.dns) }}
+        search:
+          - {{ networks.home_wifi.domain | default(network_settings.home_wifi.domain) }}
+      routes:
+        - to: default
+          via: {{ networks.home_wifi.gateway | default(network_settings.home_wifi.gateway) }}
+{% endif %}

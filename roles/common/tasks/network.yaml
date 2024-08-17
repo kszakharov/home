@@ -1,0 +1,26 @@
+---
+- name: Ensure Netplan package is installed
+  package:
+    name: netplan.io
+    state: present
+  tags: dependencies
+
+- name: Configure network settings using Netplan
+  template:
+    src: netplan_config.yaml.j2
+    dest: "/etc/netplan/config.yaml"
+    mode: '600'
+  notify:
+    - Apply netplan network configuration
+
+- name: Disable legacy (conflicting) network management services
+  systemd_service:
+    name: "{{ item }}"
+    state: stopped
+    masked: yes  # Provides the strongest protection against a service being started inadvertently.
+    enabled: false
+  loop:
+    - dhcpcd
+    - networking
+    - wpa_supplicant
+  tags: dependencies
