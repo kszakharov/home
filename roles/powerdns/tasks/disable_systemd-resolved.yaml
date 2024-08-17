@@ -1,0 +1,6 @@
+---
+- name: Stop systemd-resolved service
+  systemd_service:
+    name: systemd-resolved
+    state: stopped
+    enabled: false

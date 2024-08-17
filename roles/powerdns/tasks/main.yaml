@@ -1,0 +1,59 @@
+---
+- name: Disable systemd-resolved
+  include_tasks: disable_systemd-resolved.yaml
+  tags: dependencies
+
+- name: Create powerdns directories
+  file:
+    path: /data/powerdns
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0775'
+
+- name: Copy files
+  copy:
+    src: .
+    dest: /data/powerdns/
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0664'
+
+- name: Start a PowerDNS Authoritative Server container
+  docker_container:
+    name: powerdns-auth
+    image: powerdns/pdns-auth-49
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - "5300:53"
+      - "5300:53/udp"
+    capabilities:
+      - NET_BIND_SERVICE
+    volumes:
+      - /data/powerdns/pdns.conf:/etc/powerdns/pdns.conf
+      - /data/powerdns/named.conf:/etc/powerdns/named.conf
+      - /data/powerdns/zones:/var/named
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      reproxy.port: "8081"
+  notify: Restart reproxy
+
+- name: Start a PowerDNS DNSdist container
+  docker_container:
+    name: powerdns-dnsdist
+    image: powerdns/dnsdist-19
+    state: started
+    restart_policy: unless-stopped
+    network_mode: host
+    user: root
+    capabilities:
+      - NET_BIND_SERVICE
+    volumes:
+      - /data/powerdns/dnsdist.conf:/etc/dnsdist/dnsdist.conf
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      reproxy.port: "8083"
+  notify: Restart reproxy

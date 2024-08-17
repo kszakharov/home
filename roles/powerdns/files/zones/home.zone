@@ -1,0 +1,15 @@
+$TTL 1H
+@  1D  IN  SOA  ns01  home. (
+                      2024053101  ; serial
+                      5H          ; refresh
+                      10M         ; retry
+                      1W          ; expire
+                      3H )        ; minimum
+@  IN  NS  ns01
+ns01  IN  A  10.0.0.101
+
+
+helium   IN  A  10.0.0.101
+neon     IN  A  10.0.0.102
+
+home     IN  CNAME  helium
