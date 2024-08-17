@@ -1,0 +1,16 @@
+---
+- name: Start a Sys-Agent container
+  docker_container:
+    name: sys-agent
+    image: umputun/sys-agent:master
+    state: started
+    restart_policy: unless-stopped
+    hostname: "{{ ansible_hostname }}"
+    labels:
+      reproxy.port: "8080"
+      reproxy.route: ^/status
+      reproxy.dest: /status
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env:
+      LISTEN: 0.0.0.0:8080
