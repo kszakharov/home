@@ -17,6 +17,6 @@ for HOST in ${HOSTS[*]}; do
     SRC="$HOST:$DIR_DATA"
     DEST="$DIR_DATA_BACKUP/$HOST/"
     echo "--- Starting backup from $SRC to $DEST ---"
-    rsync -e "ssh -o StrictHostKeyChecking=accept-new" -a --delete --verbose $USER@$SRC $DEST
+    rsync -e "ssh -o StrictHostKeyChecking=accept-new" -a --delete --verbose --exclude "postgresql" --exclude "mongodb" $USER@$SRC $DEST
     echo "========================================="
 done
