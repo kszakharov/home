@@ -1,0 +1,22 @@
+---
+- name: Create zabbix directories
+  file:
+    path: /data/zabbix
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0775'
+
+- name: Start a zabbix-server container
+  docker_container:
+    name: zabbix-server
+    image: zabbix/zabbix-server-pgsql:alpine-6.4-latest
+    state: started
+    restart_policy: unless-stopped
+    network_mode: host
+    ports:
+      - 10051:10051
+    env:
+      DB_SERVER_HOST: "helium"
+      POSTGRES_USER: "{{ postgresql.user }}"
+      POSTGRES_PASSWORD: "{{ postgresql.password }}"

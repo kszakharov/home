@@ -1,0 +1,15 @@
+---
+- name: Start a zabbix-web container
+  docker_container:
+    name: zabbix-web
+    image: zabbix/zabbix-web-nginx-pgsql:alpine-6.4-latest
+    state: started
+    restart_policy: unless-stopped
+    labels:
+      reproxy.port: "8080"
+      reproxy.route: ^/zabbix/(.*)
+    env:
+      ZBX_SERVER_HOST: "helium"
+      DB_SERVER_HOST: "helium"
+      POSTGRES_USER: "{{ postgresql.user }}"
+      POSTGRES_PASSWORD: "{{ postgresql.password }}"
