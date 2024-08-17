@@ -1,0 +1,19 @@
+---
+- name: stop service
+  systemd_service:
+    name: watchdog
+    state: stopped
+
+- name: start service
+  systemd_service:
+    name: watchdog
+    state: started
+
+# NOTE: Unable to restart service watchdog: Job for watchdog.service canceled.
+# logs: watchdog.service: Triggering OnFailure= dependencies.
+# systemctl show watchdog | grep OnFailure
+# OnFailure=wd_keepalive.service
+- name: restart service
+  systemd_service:
+    state: restarted
+    name: watchdog

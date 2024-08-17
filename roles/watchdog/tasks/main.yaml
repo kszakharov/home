@@ -1,0 +1,24 @@
+---
+- name: Install watchdog package
+  package:
+    name: watchdog
+    state: present
+
+- name: Update /etc/watchdog.conf
+  blockinfile:
+    path: /etc/watchdog.conf
+    backup: true
+    block: |
+      interface = wlan0
+      ping-count = 10
+      ping = 8.8.8.8
+      interval = 30
+  notify:
+    - stop service
+    - start service
+
+- name: Enable and start
+  systemd_service:
+    name: watchdog
+    state: started
+    enabled: true
