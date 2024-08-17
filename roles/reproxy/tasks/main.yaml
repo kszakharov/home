@@ -1,4 +1,20 @@
 ---
+- name: Create reproxy directories
+  file:
+    path: /data/reproxy/web
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0775'
+
+- name: Copy web-site
+  copy:
+    src: .
+    dest: /data/reproxy/
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0664'
+
 - name: Start a reproxy container
   docker_container:
     name: reproxy
@@ -15,6 +31,7 @@
       LISTEN: 0.0.0.0:8080
       DOCKER_ENABLED: "true"
       DOCKER_AUTO: "true"
+      ASSETS_LOCATION: /web
       DEBUG: "true"
       KEEP_HOST: "true"
       HEADER:

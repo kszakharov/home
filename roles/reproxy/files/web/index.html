@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeLab</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <script src="script.js"></script>
+    <header>
+        <h1>Welcome to My HomeLab</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="http://helium/zabbix/">Zabbix</a></li>
+            <li><a href="http://helium/grafana/">Grafana</a></li>
+            <li><a href="http://neon/gitea/">Gitea</a></li>
+        </ul>
+    </nav>
+
+    <main>
+    </main>
+    <div class="server-stats-container">
+        <div class="server-stats">
+            <h1 id="helium-hostname">helium</h1>
+            <div class="stats-container">
+                <div> CPU: <span id="helium-cpu-percent"></span></div>
+                <div> Memory: <span id="helium-mem-percent"></span></div>
+                <div> Uptime: <span id="helium-uptime"></span></div>
+                <div> Load Average: <span id="helium-load-average-one"></span>/<span id="helium-load-average-five"></span>/<span id="helium-load-average-fifteen"></span></div>
+            </div>
+        </div>
+        <div class="server-stats">
+            <h1 id="neon-hostname">neon</h1>
+            <div class="stats-container">
+                <div> CPU: <span id="neon-cpu-percent"></span></div>
+                <div> Memory: <span id="neon-mem-percent"></span></div>
+                <div> Uptime: <span id="neon-uptime"></span></div>
+                <div> Load Average: <span id="neon-load-average-one"></span>/<span id="neon-load-average-five"></span>/<span
+                        id="neon-load-average-fifteen"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 My HomeLab</p>
+    </footer>
+    
+</body>
+
+</html>
