@@ -1,0 +1,64 @@
+---
+- name: Set variables
+  set_fact:
+    dir_data_app: /data/cronn
+
+- name: Create cronn directory
+  file:
+    path: "{{ dir_data_app }}"
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0775'
+
+- name: Create scripts directory
+  file:
+    path: "{{ dir_data_app }}/scripts"
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0775'
+
+- name: Create data-backup directory
+  file:
+    path: /data_backup
+    state: directory
+    owner: root
+    group: "{{ autouser.name }}"
+    mode: '0775'
+
+- name: Copy backup script
+  template:
+    src: backup-data.sh.j2
+    dest: "{{ dir_data_app }}/scripts/backup-data.sh"
+    group: "{{ autouser.name }}"
+    mode: '0774'
+
+- name: Copy crontab file
+  copy:
+    src: .
+    dest: "{{ dir_data_app }}/"
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0664'
+
+- name: Pull the latest version of Docker image
+  docker_image:
+    name: kszakharov/cronn
+    source: pull
+    force_source: true
+  register: image_pull
+
+- name: Start a cronn container
+  docker_container:
+    name: cronn
+    image: kszakharov/cronn
+    restart_policy: unless-stopped
+    volumes:
+      - "{{ dir_data_app }}/crontab:/srv/crontab:ro"
+      - "{{ dir_data_app }}/scripts:/scripts"
+      - /home/{{ autouser.name }}/.ssh/id_ed25519:/home/app/.ssh/id_ed25519:ro
+      - /data_backup:/data_backup
+    env:
+      TIME_ZONE: "{{ timezone }}"
+      APP_UID: "{{ autouser.uid }}"

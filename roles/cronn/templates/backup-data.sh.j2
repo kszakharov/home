@@ -1,0 +1,22 @@
+#!/bin/bash
+
+exec &> >( ts "[%Y.%m.%d %H:%M:%S] ")
+
+HOSTS=(
+{% for host in vars['groups']['all'] %}
+    {{ host }}
+{% endfor %}
+)
+
+USER={{ autouser.name }}
+DIR_DATA="/data"
+DIR_DATA_BACKUP="/data_backup"
+
+echo "=== Starting backup $DIR_DATA directories ==="
+for HOST in ${HOSTS[*]}; do
+    SRC="$HOST:$DIR_DATA"
+    DEST="$DIR_DATA_BACKUP/$HOST/"
+    echo "--- Starting backup from $SRC to $DEST ---"
+    rsync -e "ssh -o StrictHostKeyChecking=accept-new" -a --delete --verbose $USER@$SRC $DEST
+    echo "========================================="
+done
