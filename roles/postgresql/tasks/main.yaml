@@ -1,0 +1,25 @@
+---
+- name: Create postgresql directories
+  file:
+    path: /data/postgresql/data
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: "0775"
+
+- name: Start a postgres container
+  docker_container:
+    name: postgres
+    image: postgres:16-alpine
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - 5432:5432
+    volumes:
+      - /data/postgresql/data:/var/lib/postgresql/data
+    env:
+      POSTGRES_DB: "{{ postgresql.db }}"
+      POSTGRES_USER: "{{ postgresql.user }}"
+      POSTGRES_PASSWORD: "{{ postgresql.password }}"
+      TZ: "{{ timezone }}"
+      PGTZ: "{{ timezone }}"
