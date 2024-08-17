@@ -13,3 +13,4 @@ helium   IN  A  10.0.0.101
 neon     IN  A  10.0.0.102
 
 home     IN  CNAME  helium
+mongo    IN  CNAME  helium

@@ -1,0 +1,22 @@
+---
+- name: Create mongodb directories
+  file:
+    path: /data/mongodb
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: "0775"
+
+- name: Start a mongodb container
+  docker_container:
+    name: mongodb
+    image: mongo:latest
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - 27017:27017
+    volumes:
+      - /data/mongodb:/data/db
+    env:
+      MONGO_INITDB_ROOT_USERNAME: "{{ mongo.user }}"
+      MONGO_INITDB_ROOT_PASSWORD: "{{ mongo.password }}"
