@@ -1,0 +1,22 @@
+---
+- name: Start a reproxy container
+  docker_container:
+    name: reproxy
+    image: umputun/reproxy:master
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - "80:8080"
+    volumes:
+      - /data/reproxy/web:/web
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env:
+      TZ: "{{ timezone }}"
+      LISTEN: 0.0.0.0:8080
+      DOCKER_ENABLED: "true"
+      DOCKER_AUTO: "true"
+      DEBUG: "true"
+      KEEP_HOST: "true"
+      HEADER:
+        X-Frame-Options:SAMEORIGIN,
+  notify: Restart reproxy

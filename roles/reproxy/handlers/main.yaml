@@ -1,0 +1,6 @@
+---
+- name: Restart reproxy
+  docker_container:
+    name: reproxy
+    state: started
+    restart: true
