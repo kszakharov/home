@@ -1,0 +1,33 @@
+---
+- hosts: all
+  roles:
+    - name: common
+      tags: common
+    - name: zabbix-agent
+      tags: zabbix-agent
+    - name: sys-agent
+      tags: sys-agent
+    - name: iperf3
+      tags: iperf3
+- hosts: helium
+  roles:
+    - name: cronn
+      tags: cronn
+    - name: reproxy
+      tags: reproxy
+    - name: postgresql
+      tags: postgresql
+    - name: grafana
+      tags: grafana
+    - name: zabbix-server
+      tags: zabbix
+    - name: zabbix-web
+      tags: zabbix
+    - name: powerdns
+      tags: powerdns
+    - name: mongodb
+      tags: mongodb
+- hosts: neon
+  roles:
+    - name: watchdog
+      tags: watchdog
