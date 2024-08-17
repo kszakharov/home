@@ -1,0 +1,18 @@
+---
+- name: Pull the latest version of Docker image
+  docker_image:
+    name: kszakharov/iperf3
+    source: pull
+    force_source: true
+  register: image_pull
+
+- name: Start an iPerf3 container
+  docker_container:
+    name: iperf3
+    image: kszakharov/iperf3
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - 5201:5201
+    labels:
+      reproxy.enabled: "false"
