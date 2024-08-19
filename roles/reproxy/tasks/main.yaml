@@ -35,5 +35,5 @@
       DEBUG: "true"
       KEEP_HOST: "true"
       HEADER:
-        X-Frame-Options:SAMEORIGIN,
+        Access-Control-Allow-Origin:*
   notify: Restart reproxy

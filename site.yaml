@@ -9,12 +9,12 @@
       tags: sys-agent
     - name: iperf3
       tags: iperf3
+    - name: reproxy
+      tags: reproxy
 - hosts: helium
   roles:
     - name: cronn
       tags: cronn
-    - name: reproxy
-      tags: reproxy
     - name: postgresql
       tags: postgresql
     - name: grafana
