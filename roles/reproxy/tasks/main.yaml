@@ -32,6 +32,7 @@
       DOCKER_ENABLED: "true"
       DOCKER_AUTO: "true"
       ASSETS_LOCATION: /web
+      ASSETS_NOT_FOUND: 404.html
       DEBUG: "true"
       KEEP_HOST: "true"
       HEADER:

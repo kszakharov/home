@@ -2,7 +2,7 @@ window.onload = function () {
     updateServerStatus()
     setInterval(() => {
         updateServerStatus()
-    }, 9995000);
+    }, 5000);
 };
 
 // Disable specific error message in console
