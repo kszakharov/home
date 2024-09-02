@@ -34,6 +34,13 @@
     group: "{{ autouser.name }}"
     mode: '0774'
 
+- name: Copy duck dns script
+  template:
+    src: duck.sh.j2
+    dest: "{{ dir_data_app }}/scripts/duck.sh"
+    group: "{{ autouser.name }}"
+    mode: '0774'
+
 - name: Copy crontab file
   copy:
     src: .

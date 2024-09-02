@@ -1,0 +1,5 @@
+#!/bin/bash
+
+exec &> >( ts "[%Y.%m.%d %H:%M:%S] ")
+
+curl --insecure "https://www.duckdns.org/update?domains={{ duck_dns_domain }}&token={{ duck_dns_token }}"

@@ -1,1 +1,2 @@
 @hourly /scripts/backup-data.sh
+@hourly /scripts/duck.sh
