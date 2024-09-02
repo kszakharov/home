@@ -27,19 +27,14 @@
     group: "{{ autouser.name }}"
     mode: '0775'
 
-- name: Copy backup script
+- name: Copy scripts
   template:
-    src: backup-data.sh.j2
-    dest: "{{ dir_data_app }}/scripts/backup-data.sh"
+    src: "{{ item }}"
+    dest: "{{ dir_data_app }}/scripts/{{ item | basename | regex_replace('\\.j2$', '') }}"
     group: "{{ autouser.name }}"
-    mode: '0774'
-
-- name: Copy duck dns script
-  template:
-    src: duck.sh.j2
-    dest: "{{ dir_data_app }}/scripts/duck.sh"
-    group: "{{ autouser.name }}"
-    mode: '0774'
+    mode: "0774"
+  with_fileglob:
+    - "templates/*.j2"
 
 - name: Copy crontab file
   copy:
