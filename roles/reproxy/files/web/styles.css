@@ -137,6 +137,12 @@ body {
     color: #666;
 }
 
+.centered-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .home-button {
     display: inline-block;
     text-decoration: none;
@@ -154,4 +160,15 @@ body {
 
 .overfoot {
     padding: 0;
+}
+
+.homeland {
+    /*margin, padding and border-radius should be the same*/
+    text-align: center;
+    white-space: pre-line;
+    margin: -10px auto 20px;
+    width: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #ecf0f1;
 }
