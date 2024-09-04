@@ -34,19 +34,26 @@ nav ul li a {
     padding: 10px 20px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-    box-shadow:
-        0 0 0 2px #3498db,
-        0 0 0 4px #ecf0f1;
 }
 
 nav ul li a:hover {
     background-color: #bdc3c7;
 }
 
-
 main {
     flex: 1;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+main:has(.overhead) {
+    padding-top: 0;
+}
+
+main:has(.overfoot) {
+    padding-bottom: 0;
+    justify-content: space-between;
 }
 
 footer {
@@ -62,24 +69,27 @@ body {
 
 .server-stats-container {
     display: flex;
-    justify-content: space-between;
-    max-width: max-content;
     margin: 0 auto;
 }
 
+.frame {
+    box-shadow:
+        0 0 0 2px #3498db,
+        0 0 0 4px #ecf0f1;
+}
+
 .server-stats {
+    /*margin, padding and border-radius should be the same*/
     flex: 0 0 45%;
     max-width: max-content;
     display: block;
-    margin: 0 auto;
+    margin: 0 10px -10px;
     padding: 10px 20px;
-    border-radius: 5px;
-    box-shadow:
-        0 0 0 2px #3498db,
-        /* Blue border */
-        0 0 0 4px #ecf0f1;
-        /* White border */
+    border-radius: 10px;
+    z-index: 10;
+    background-color: #ecf0f1;
 }
+
 .server-stats h1 {
     color: #333;
     margin: 0 auto;
@@ -88,7 +98,6 @@ body {
 .high-load h1 {
     color: red;
 }
-
 
 .stats-container {
     display: grid;
@@ -136,4 +145,13 @@ body {
     padding: 10px 20px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
+}
+
+.overhead {
+    list-style-type: none;
+    padding: 0;
+}
+
+.overfoot {
+    padding: 0;
 }
