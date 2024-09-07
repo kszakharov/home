@@ -1,6 +1,6 @@
 #!/bin/bash
 
-exec &> >( ts "[%Y.%m.%d %H:%M:%S] ")
+exec &> >( ts "[%Y.%m.%d %H:%M:%S]")
 
 HOSTS=(
 {% for host in vars['groups']['all'] %}
