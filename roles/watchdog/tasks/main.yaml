@@ -1,4 +1,8 @@
 ---
+# Reference: This code is based on the instructions from the following article:
+# https://defgw.wordpress.com/2017/10/24/watchdog-reboot-raspberry-pi-if-network-is-down/
+
+# TODO: reboot the server after instalation
 - name: Install watchdog package
   package:
     name: watchdog
