@@ -22,6 +22,12 @@ network:
 {% if networks.home_wifi is defined  %}
   wifis:
     {{ networks.home_wifi.dev }}:
+      # TODO: Renaming the WiFi interface would be beneficial, but it's not currently supported.
+      # Remember to update the name in `watchdog`.
+      # ERROR: wlan0: networkd backend does not support wifi with match:, only by interface name
+      # match:
+      #   macaddress: {{ networks.home_wifi.mac }}
+      # set-name: {{ networks.home_wifi.dev }}
       addresses: 
 {% for address in networks.home_wifi.addresses %}
         - {{ address }}{{ network_settings.home_wifi.cidr }}
