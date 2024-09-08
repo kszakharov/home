@@ -18,5 +18,5 @@
     labels:
       reproxy.enabled: "false"
     env:
-      ZBX_SERVER_HOST: "helium"
+      ZBX_SERVER_HOST: "zabbix,127.0.0.1"
       ZBX_HOSTNAME: "{{ ansible_hostname }}"
