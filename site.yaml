@@ -1,33 +1,36 @@
 ---
-- hosts: servers
+- name: Deploy common components
+  hosts: servers
   roles:
-    - name: common
+    - role: common
       tags: common
-    - name: zabbix-agent
+    - role: zabbix-agent
       tags: zabbix-agent
-    - name: sys-agent
+    - role: sys-agent
       tags: sys-agent
-    - name: iperf3
+    - role: iperf3
       tags: iperf3
-    - name: reproxy
+    - role: reproxy
       tags: reproxy
-- hosts: helium
+- name: Deploy helium-specific components
+  hosts: helium
   roles:
-    - name: cronn
+    - role: cronn
       tags: cronn
-    - name: postgresql
+    - role: postgresql
       tags: postgresql
-    - name: grafana
+    - role: grafana
       tags: grafana
-    - name: zabbix-server
+    - role: zabbix-server
       tags: zabbix
-    - name: zabbix-web
+    - role: zabbix-web
       tags: zabbix
-    - name: powerdns
+    - role: powerdns
       tags: powerdns
-    - name: mongodb
+    - role: mongodb
       tags: mongodb
-- hosts: neon
+- name: Deploy neon-specific components
+  hosts: neon
   roles:
-    - name: watchdog
+    - role: watchdog
       tags: watchdog
