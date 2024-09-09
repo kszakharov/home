@@ -28,7 +28,6 @@
       - /var/run/docker.sock:/var/run/docker.sock:ro
     env:
       TZ: "{{ timezone }}"
-      LISTEN: 0.0.0.0:8080
       DOCKER_ENABLED: "true"
       DOCKER_AUTO: "true"
       ASSETS_LOCATION: /web
