@@ -61,6 +61,10 @@
       - "{{ dir_data_app }}/scripts:/scripts"
       - /home/{{ autouser.name }}/.ssh/id_ed25519:/home/app/.ssh/id_ed25519:ro
       - /data_backup:/data_backup
+    dns_servers:
+      - "{{ dns }}"
+    dns_search_domains:
+      - home
     env:
       TIME_ZONE: "{{ timezone }}"
       APP_UID: "{{ autouser.uid }}"

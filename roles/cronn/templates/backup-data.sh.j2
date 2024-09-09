@@ -3,7 +3,7 @@
 exec &> >( ts "[%Y.%m.%d %H:%M:%S]")
 
 HOSTS=(
-{% for host in vars['groups']['all'] %}
+{% for host in vars["groups"]["servers"] %}
     {{ host }}
 {% endfor %}
 )
