@@ -68,8 +68,10 @@ function updateUptime(element, value) {
         element.innerText = dDisplay + ", " + hDisplay;
     } else if (h > 0) {
         element.innerText = hDisplay + ", " + mDisplay;
-    } else {
+    } else if (m > 0) {
         element.innerText = mDisplay + ", " + sDisplay;
+    } else {
+        element.innerText = sDisplay;
     }
 }
 
