@@ -24,3 +24,7 @@ servers:
 storages:
   hosts:
     argon:
+
+routers:
+  hosts:
+    krypton:
