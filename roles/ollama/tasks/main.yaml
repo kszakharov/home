@@ -1,0 +1,44 @@
+---
+- name: Create ollama directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0775'
+  loop:
+    - /data/ollama/data
+    - /data/ollama/web
+
+- name: Start ollama container
+  docker_container:
+    name: ollama
+    image: ollama/ollama
+    state: started
+    restart_policy: unless-stopped
+    memory: 8G
+    volumes:
+      - /data/ollama/data:/root/.ollama
+    ports:
+      - 11434:11434
+    labels:
+      reproxy.enabled: "false"
+
+# NOTE: The environment variable `WEBUI_URL` is not functioning as expected for the Base URL.
+# See https://github.com/open-webui/open-webui/discussions/3431
+- name: Start ollama-web-ui container
+  docker_container:
+    name: ollama-web-ui
+    image: ghcr.io/open-webui/open-webui:main
+    state: started
+    restart_policy: unless-stopped
+    etc_hosts:
+      host.docker.internal: host-gateway
+    volumes:
+      - /data/ollama/web:/app/backend/data
+    ports:
+      - 11111:8080
+    env:
+      WEBUI_URL: "http:/{{ ansible_host }}/chat/"
+    labels:
+      reproxy.route: ^/chat/(.*)

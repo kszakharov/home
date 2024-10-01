@@ -29,6 +29,8 @@
       tags: powerdns
     - role: mongodb
       tags: mongodb
+    - role: ollama
+      tags: ollama
 - name: Deploy neon-specific components
   hosts: neon
   roles:
