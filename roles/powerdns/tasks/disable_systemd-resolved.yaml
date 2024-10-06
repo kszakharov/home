@@ -4,3 +4,4 @@
     name: systemd-resolved
     state: stopped
     enabled: false
+    masked: true  # Provides the strongest protection against a service being started inadvertently.

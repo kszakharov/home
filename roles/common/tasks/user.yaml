@@ -11,6 +11,17 @@
   loop_control:
     label: "{{ item.username }}"
 
+- name: Add user to sudoers
+  community.general.sudoers:
+    name: "{{ item.username }}"
+    user: "{{ item.username }}"
+    commands: "ALL"
+    nopassword: true
+    state: "{{ 'present' if item.sudo else 'absent' }}"
+  with_items: "{{ users }}"
+  loop_control:
+    label: "{{ item.username }}"
+
 - name: Set up SSH public keys for users
   authorized_key:
     user: "{{ item.username }}"

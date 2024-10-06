@@ -10,12 +10,14 @@ users:
     groups:
       - docker
       - home
+    sudo: true
     public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDD76NDt1KzNp71/n/iAH5N6wmVFn+69ZgMm+E8g0etmoGh+0JAo5GhXB/VTUIGQi1Y3qi+/X0f4l+LxeRfBKU/USK/KydA/Rj8NZzAR7UEYYS/eLS2lQfvBAX9URhKVZ7f8dpMvJc6j2a0eHBsickDD9dxmTETzxUVSBxwLd2CyMuPeTg+BdZQTm+ROgI/MN64mAvVaf4TDTOxKu85OKWY+Zt53BYnItf8QBx7FimjLx3XV3nRuN5n9QoWaxvxZXm2jdS/cc2pg0y1FZqwIWfe77xtIIk0y1MtmEEzyFIBYgS8q0QgpgsjbMkZTiwSOiiWhvvssGmFOmGH2rZvYAFX
     active: true
   - username: "{{ autouser.name }}"
     comment: Home Automation User
     uid: "{{ autouser.uid }}"
     groups:
+    sudo: false
     public_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIGSLqQDxSB0UAL8+uZSDf17F4B7zQC4TIztjx3ng4bE
     private_key: !vault |
       $ANSIBLE_VAULT;1.1;AES256

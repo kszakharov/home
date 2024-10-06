@@ -17,7 +17,7 @@
   systemd_service:
     name: "{{ item }}"
     state: stopped
-    masked: yes  # Provides the strongest protection against a service being started inadvertently.
+    masked: true  # Provides the strongest protection against a service being started inadvertently.
     enabled: false
   loop:
     - dhcpcd
