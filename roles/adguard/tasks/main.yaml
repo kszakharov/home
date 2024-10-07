@@ -1,0 +1,30 @@
+---
+- name: Create  AdGuard Home directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0775'
+  loop:
+    - /data/adguard/work
+    - /data/adguard/conf
+
+- name: Start AdGuard Home container
+  docker_container:
+    name: adguardhome
+    image: adguard/adguardhome
+    state: started
+    restart_policy: unless-stopped
+    etc_hosts:
+      host.docker.internal: host-gateway
+    volumes:
+      - /data/adguard/work:/opt/adguardhome/work
+      - /data/adguard/conf:/opt/adguardhome/conf
+    ports:
+      - 5301:53/udp
+    labels:
+      reproxy.route: ^/adguard/(.*)
+      reproxy.port: "80"
+      reproxy.keep-host: "yes"
+  notify: Restart reproxy

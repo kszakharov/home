@@ -31,6 +31,8 @@
       tags: mongodb
     - role: ollama
       tags: ollama
+    - role: adguard
+      tags: adguard
 - name: Deploy neon-specific components
   hosts: neon
   roles:
