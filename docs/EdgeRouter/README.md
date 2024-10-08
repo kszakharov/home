@@ -114,3 +114,26 @@ exit
     set service nat rule 5001 source group
     set service nat rule 5001 type masquerade
     ```
+
+## WireGuard Setup
+
+1. Download and install WireGuard
+    ```bash
+    curl -qLs https://github.com/WireGuard/wireguard-vyatta-ubnt/releases/download/1.0.20220627-1/e50-v2-v1.0.20220627-v1.0.20210914.deb -o wireguard.deb
+    sudo dpkg -i wireguard.deb
+    ```
+2. Generate WireGuard Keypair
+    ```bash
+    wg genkey | tee /dev/tty | wg pubkey
+    ```
+3.  Configure WireGuard Interface
+    ```bash
+    configure
+    set interfaces wireguard wg0 address 10.10.0.1/24
+    set interfaces wireguard wg0 listen-port 51820
+    set interfaces wireguard wg0 route-allowed-ips true
+    set interfaces wireguard wg0 private-key <server_pivate_key>
+    set interfaces wireguard wg0 peer <client_public_key> allowed-ips 10.10.0.0/24
+    commit
+    save
+    ```

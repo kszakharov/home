@@ -12,9 +12,11 @@ graph TD
     helium(<center>helium<br>10.0.0.101</center>)
     neon(<center>neon<br>10.0.0.102</center>)
     argon(<center>argon<br>10.0.0.103</center>)
+    personal_devices@{ shape: stacked-rectangle, label: <center>Personal Devices</center> }
 
     internet---krypton
     krypton---router
+    personal_devices-.-|vpn|krypton
 
     subgraph "home network"
         router---helium
