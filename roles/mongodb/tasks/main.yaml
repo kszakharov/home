@@ -10,7 +10,7 @@
 - name: Start a mongodb container
   docker_container:
     name: mongodb
-    image: mongo:latest
+    image: mongo:8.0
     state: started
     restart_policy: unless-stopped
     ports:
