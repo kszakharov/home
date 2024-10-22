@@ -1,0 +1,42 @@
+---
+- name: Create Home Assistant directories
+  file:
+    path: /data/home-assistant/config
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: "0775"
+
+- name: Start Home Assistant container
+  docker_container:
+    name: home-assistant
+    image: ghcr.io/home-assistant/home-assistant:2024.10
+    state: started
+    restart_policy: unless-stopped
+    volumes:
+      - /data/home-assistant/config:/config
+      - /run/dbus:/run/dbus:ro
+    expose:
+      - 8123
+    env:
+      TZ: "{{ timezone }}"
+      PUID: "{{ autouser.uid }}"
+      PGID: "{{ autouser.uid }}"
+      UMASK: "007"
+    labels:
+      reproxy.server: "ha.home"
+      reproxy.route: "^/(.*)"
+      reproxy.port: "8123"
+      reproxy.keep-host: "yes"
+  notify: Restart reproxy
+
+- name: Update Home Assistant configuration
+  blockinfile:
+    block: |
+      http:
+        use_x_forwarded_for: true
+        trusted_proxies:
+          - 172.17.0.0/16  # Docker subnet
+    prepend_newline: true
+    path: /data/home-assistant/config/configuration.yaml
+    create: false

@@ -33,6 +33,8 @@
       tags: ollama
     - role: adguard
       tags: adguard
+    - role: home-assistant
+      tags: home-assistant
 - name: Deploy neon-specific components
   hosts: neon
   roles:
