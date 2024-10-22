@@ -1,3 +1,8 @@
+:root {
+  --main-padding: 20px;
+  --color-primary: #3498db;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -9,48 +14,56 @@ body {
 }
 
 header {
-  background-color: #3498db;
+  background-color: var(--color-primary);
   color: #fff;
   text-align: center;
   padding: 20px 0;
 }
 
-nav ul {
-  list-style-type: none;
-  display: flex;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  flex-wrap: wrap;
-  gap: 30px 0px;
-  flex-direction: row;
-  justify-content: center;
-}
-
-nav ul li {
-  display: inline;
-  margin: 0 10px;
-}
-
-nav ul li a {
-  text-decoration: none;
-  color: #333;
-  background-color: #ecf0f1;
+.overhead a {
   padding: 10px 20px;
   border-radius: 5px;
-  transition: background-color 0.3s ease;
+  border: 2px solid var(--color-primary);
+  outline: 2px solid #ecf0f1;
+  background-color: #ecf0f1;
+  text-decoration: none;
+  color: #333;
 }
 
-nav ul li a:hover {
+.overhead a:hover {
   background-color: #bdc3c7;
 }
 
 main {
+  position: relative;
   flex: 1;
-  padding: 20px;
+  padding: var(--main-padding);
   display: flex;
   flex-direction: column;
+}
+
+div.nav {
+  position: absolute;
+  top: -10px;
+  display: flex;
+  width: calc(100% - var(--main-padding) * 2);
+  flex-wrap: wrap;
   gap: 20px;
+  justify-content: center;
+}
+
+div.nav a:hover {
+  background-color: #bdc3c7;
+}
+
+div.nav a {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 2px solid var(--color-primary);
+  outline: 2px solid #ecf0f1;
+  background-color: #ecf0f1;
+  text-decoration: none;
+  color: #333;
 }
 
 main:has(.overhead) {
@@ -59,11 +72,10 @@ main:has(.overhead) {
 
 main:has(.overfoot) {
   padding-bottom: 0;
-  justify-content: space-between;
 }
 
 footer {
-  background-color: #3498db;
+  background-color: var(--color-primary);
   color: #fff;
   text-align: center;
   padding: 20px 0;
@@ -76,15 +88,11 @@ body {
 .server-stats-container {
   display: flex;
   margin: 0 auto;
-  flex-wrap: wrap;
-  gap: 30px 10px;
-  justify-content: center;
 }
 
 .frame {
-  box-shadow:
-    0 0 0 2px #3498db,
-    0 0 0 4px #ecf0f1;
+  border: 2px solid var(--color-primary);
+  outline: 2px solid #ecf0f1;
 }
 
 .server-stats {
@@ -155,20 +163,31 @@ body {
 .home-button {
   display: inline-block;
   text-decoration: none;
-  background-color: #3498db;
+  background-color: var(--color-primary);
   color: #fff;
   padding: 10px 20px;
   border-radius: 5px;
   transition: background-color 0.3s ease;
 }
 
-.overhead {
-  list-style-type: none;
+.overhead,
+.overfoot {
   padding: 0;
+  margin: 0;
+  display: flex;
+  width: calc(100% - var(--main-padding) * 2);
+  flex-wrap: wrap;
+  gap: 5px 20px;
+  justify-content: center;
+}
+
+.overhead {
+  top: -10px;
 }
 
 .overfoot {
-  padding: 0;
+  bottom: -10px;
+  position: absolute;
 }
 
 .homeland {
@@ -182,3 +201,14 @@ body {
   background-color: #ecf0f1;
   font-size: 2vw;
 }
+@media (max-width: 443px) {
+  .overfoot,
+  .overhead {
+    position: initial;
+  }
+  .overfoot {
+    gap: 1rem;
+    margin-top: 10px;
+  }
+}
+
