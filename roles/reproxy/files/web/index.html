@@ -2,61 +2,59 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HomeLab</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomeLab</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <script src="script.js"></script>
-    <header>
-        <h1>Welcome to My HomeLab</h1>
-    </header>
+  <script src="script.js"></script>
+  <header>
+    <h1>Welcome to My HomeLab</h1>
+  </header>
 
-    <main>
-        <nav class="overhead">
-            <ul>
-                <li><a class="frame" href="#">Home</a></li>
-                <li><a class="frame" href="http://argon/">NAS</a></li>
-                <li><a class="frame" href="http://helium/chat/">Chat</a></li>
-                <li><a class="frame" href="http://helium/adguard/">AdGuard</a></li>
-                <li><a class="frame" href="http://helium/zabbix/">Zabbix</a></li>
-                <li><a class="frame" href="http://helium/grafana/">Grafana</a></li>
-                <li><a class="frame" href="http://neon/gitea/">Gitea</a></li>
-                <li><a class="frame" href="http://10.0.0.1/">Router</a></li>
-                <li><a class="frame" href="http://krypton/">EdgeRouter</a></li>
-                <li><a class="frame" href="/homeland.html">Homeland</a></li>
-            </ul>
-        </nav>
+  <main>
+    <nav class="overhead">
+      <ul>
+        <li><a class="frame" href="#">Home</a></li>
+        <li><a class="frame" href="http://argon/">NAS</a></li>
+        <li><a class="frame" href="http://helium/chat/">Chat</a></li>
+        <li><a class="frame" href="http://helium/adguard/">AdGuard</a></li>
+        <li><a class="frame" href="http://helium/zabbix/">Zabbix</a></li>
+        <li><a class="frame" href="http://helium/grafana/">Grafana</a></li>
+        <li><a class="frame" href="http://neon/gitea/">Gitea</a></li>
+        <li><a class="frame" href="http://10.0.0.1/">Router</a></li>
+        <li><a class="frame" href="http://krypton/">EdgeRouter</a></li>
+        <li><a class="frame" href="/homeland.html">Homeland</a></li>
+      </ul>
+    </nav>
 
-        <div class="server-stats-container overfoot">
-            <div class="server-stats frame">
-                <h1 id="helium-hostname">helium</h1>
-                <div class="stats-container">
-                    <div> CPU: <span id="helium-cpu-percent"></span></div>
-                    <div> Memory: <span id="helium-mem-percent"></span></div>
-                    <div> Uptime: <span id="helium-uptime"></span></div>
-                    <div> Load Average: <span id="helium-load-average-one"></span>/<span id="helium-load-average-five"></span>/<span id="helium-load-average-fifteen"></span></div>
-                </div>
-            </div>
-            <div class="server-stats frame">
-                <h1 id="neon-hostname">neon</h1>
-                <div class="stats-container">
-                    <div> CPU: <span id="neon-cpu-percent"></span></div>
-                    <div> Memory: <span id="neon-mem-percent"></span></div>
-                    <div> Uptime: <span id="neon-uptime"></span></div>
-                    <div> Load Average: <span id="neon-load-average-one"></span>/<span id="neon-load-average-five"></span>/<span
-                            id="neon-load-average-fifteen"></span></div>
-                </div>
-            </div>
+    <div class="server-stats-container overfoot">
+      <div class="server-stats frame">
+        <h1 id="helium-hostname">helium</h1>
+        <div class="stats-container">
+          <div> CPU: <span id="helium-cpu-percent"></span></div>
+          <div> Memory: <span id="helium-mem-percent"></span></div>
+          <div> Uptime: <span id="helium-uptime"></span></div>
+          <div> Load Average: <span id="helium-load-average-one"></span>/<span id="helium-load-average-five"></span>/<span id="helium-load-average-fifteen"></span></div>
         </div>
-    </main>
+      </div>
+      <div class="server-stats frame">
+        <h1 id="neon-hostname">neon</h1>
+        <div class="stats-container">
+          <div> CPU: <span id="neon-cpu-percent"></span></div>
+          <div> Memory: <span id="neon-mem-percent"></span></div>
+          <div> Uptime: <span id="neon-uptime"></span></div>
+          <div> Load Average: <span id="neon-load-average-one"></span>/<span id="neon-load-average-five"></span>/<span id="neon-load-average-fifteen"></span></div>
+        </div>
+      </div>
+    </div>
+  </main>
 
-    <footer>
-        <p>&copy; 2024 My HomeLab</p>
-    </footer>
-    
+  <footer>
+    <p>&copy; 2024 My HomeLab</p>
+  </footer>
 </body>
 
 </html>
