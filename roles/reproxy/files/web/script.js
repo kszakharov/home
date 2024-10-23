@@ -28,6 +28,7 @@ function updateServerStatus() {
                 document.getElementById(`${server}-hostname`).classList.remove("high-load")
                 updateCpu(document.getElementById(`${server}-cpu-percent`), data.cpu_percent)
                 updateMem(document.getElementById(`${server}-mem-percent`), data.mem_percent)
+                updateDisk(document.getElementById(`${server}-disk-percent`), data.volumes.root.usage_percent)
                 updateUptime(document.getElementById(`${server}-uptime`), data.uptime)
                 updateLoadAverage(server, data.load_average.one, data.load_average.five, data.load_average.fifteen)
             })
@@ -48,6 +49,11 @@ function updateCpu(element, value) {
 }
 
 function updateMem(element, value) {
+    element.innerText = value + '%';
+    element.className = getClassByValue(value)
+}
+
+function updateDisk(element, value) {
     element.innerText = value + '%';
     element.className = getClassByValue(value)
 }
