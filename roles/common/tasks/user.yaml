@@ -1,11 +1,16 @@
 ---
+- name: Include Docker management tasks
+  include_tasks: ../docker/tasks/main.yaml
+  tags:
+    - dependencies
+
 - name: Create and configure users
   user:
     name: "{{ item.username }}"
     comment: "{{ item.comment }}"
     uid: "{{ item.uid }}"
     groups: "{{ item.groups }}"
-    append: yes
+    append: true
   with_items: "{{ users }}"
   when: item.active
   loop_control:
