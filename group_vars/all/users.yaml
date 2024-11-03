@@ -4,15 +4,6 @@ autouser:
   uid: 1100
 
 users:
-  - username: kszakharov
-    comment: Kostiantyn Zakharov
-    uid: 1000
-    groups:
-      - docker
-      - home
-    sudo: true
-    public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDD76NDt1KzNp71/n/iAH5N6wmVFn+69ZgMm+E8g0etmoGh+0JAo5GhXB/VTUIGQi1Y3qi+/X0f4l+LxeRfBKU/USK/KydA/Rj8NZzAR7UEYYS/eLS2lQfvBAX9URhKVZ7f8dpMvJc6j2a0eHBsickDD9dxmTETzxUVSBxwLd2CyMuPeTg+BdZQTm+ROgI/MN64mAvVaf4TDTOxKu85OKWY+Zt53BYnItf8QBx7FimjLx3XV3nRuN5n9QoWaxvxZXm2jdS/cc2pg0y1FZqwIWfe77xtIIk0y1MtmEEzyFIBYgS8q0QgpgsjbMkZTiwSOiiWhvvssGmFOmGH2rZvYAFX
-    active: true
   - username: "{{ autouser.name }}"
     comment: Home Automation User
     uid: "{{ autouser.uid }}"
@@ -46,4 +37,13 @@ users:
       65626565333761333266636362343135653633643730356562313533343035363135366132663161
       64336137323835363639636238376630326261613163613233356365346332343435643937623135
       3139
+    active: true
+  - username: kszakharov
+    comment: Kostiantyn Zakharov
+    uid: 1000
+    groups:
+      - docker
+      - home
+    sudo: true
+    public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDD76NDt1KzNp71/n/iAH5N6wmVFn+69ZgMm+E8g0etmoGh+0JAo5GhXB/VTUIGQi1Y3qi+/X0f4l+LxeRfBKU/USK/KydA/Rj8NZzAR7UEYYS/eLS2lQfvBAX9URhKVZ7f8dpMvJc6j2a0eHBsickDD9dxmTETzxUVSBxwLd2CyMuPeTg+BdZQTm+ROgI/MN64mAvVaf4TDTOxKu85OKWY+Zt53BYnItf8QBx7FimjLx3XV3nRuN5n9QoWaxvxZXm2jdS/cc2pg0y1FZqwIWfe77xtIIk0y1MtmEEzyFIBYgS8q0QgpgsjbMkZTiwSOiiWhvvssGmFOmGH2rZvYAFX
     active: true
