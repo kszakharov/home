@@ -1,0 +1,21 @@
+---
+- name: Start dufs container
+  docker_container:
+    name: dufs
+    image: sigoden/dufs
+    state: started
+    restart_policy: unless-stopped
+    etc_hosts:
+      host.docker.internal: host-gateway
+    volumes:
+      - /data_backup:/data_backup
+    exposed_ports:
+      - 5000
+    env:
+      DUFS_PATH_PREFIX: "/share"
+      DUFS_ALLOW_ALL: "true"
+      DUFS_SERVE_PATH: "/data_backup"
+    labels:
+      reproxy.route: ^/share/(.*)
+      reproxy.dest: /share/$1
+  notify: Restart reproxy

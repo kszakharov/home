@@ -12,6 +12,8 @@
       tags: iperf3
     - role: reproxy
       tags: reproxy
+    - role: dufs
+      tags: dufs
 - name: Deploy helium-specific components
   hosts: helium
   roles:
