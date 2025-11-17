@@ -18,3 +18,7 @@ home     IN  CNAME  helium
 mongo    IN  CNAME  helium
 zabbix   IN  CNAME  helium
 ha       IN  CNAME  helium
+
+; PTR records for DNS-SD
+_dns-sd._udp  IN  PTR  db._dns-sd._udp.0.0.0.10.in-addr.arpa.
+db._dns-sd._udp  IN  PTR  PowerDNS_Database._dns-sd._udp.local.
