@@ -44,3 +44,8 @@
   roles:
     - role: watchdog
       tags: watchdog
+- name: Deploy xenon-specific components
+  hosts: xenon
+  roles:
+    - role: wireguard-client
+      tags: wireguard-client

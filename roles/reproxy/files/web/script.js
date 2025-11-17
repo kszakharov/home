@@ -16,7 +16,7 @@ window.addEventListener('error', function (e) {
 });
 
 function updateServerStatus() {
-    for (const server of ["helium", "neon"]) {
+    for (const server of ["helium", "neon", "xenon"]) {
         fetch(`http://${server}/status`)
             .then(response => {
                 if (!response.ok) {

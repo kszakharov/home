@@ -44,3 +44,11 @@ network:
         - to: default
           via: {{ networks.home_wifi.gateway | default(network_settings.home_wifi.gateway) }}
 {% endif %}
+{% if networks.cloud is defined  %}
+  ethernets:
+    {{ networks.cloud.dev }}:
+      match:
+        macaddress: "{{ networks.cloud.mac }}"
+      dhcp4: {{ networks.cloud.dhcp | lower }}
+      set-name: {{ networks.cloud.dev }}
+{% endif %}
