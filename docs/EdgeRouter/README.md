@@ -132,6 +132,7 @@ exit
     set interfaces wireguard wg0 address 10.10.0.1/24
     set interfaces wireguard wg0 listen-port 51820
     set interfaces wireguard wg0 route-allowed-ips true
+    set protocols static interface-route 10.10.0.0/24 next-hop-interface wg0
     set interfaces wireguard wg0 private-key <server_pivate_key>
     set interfaces wireguard wg0 peer <client_public_key> allowed-ips 10.10.0.0/24
     commit

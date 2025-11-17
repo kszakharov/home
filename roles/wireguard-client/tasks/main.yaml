@@ -1,0 +1,19 @@
+---
+- name: Install WireGuard packages
+  package:
+    name: wireguard
+    state: present
+  tags: dependencies
+
+- name: Create WireGuard configuration
+  template:
+    src: wg0.conf.j2
+    dest: /etc/wireguard/wg0.conf
+    mode: "0600"
+  notify: Restart WireGuard
+
+- name: Enable WireGuard service
+  systemd_service:
+    name: wg-quick@wg0
+    enabled: true
+    state: started

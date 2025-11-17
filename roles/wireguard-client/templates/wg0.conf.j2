@@ -1,0 +1,12 @@
+[Interface]
+PrivateKey = {{ networks.vpn.private_key }}
+Address = {{ networks.vpn.address }}/32
+DNS = {{ network_settings.vpn.dns }}, {{ network_settings.home.domain }}
+PostUp = ip route add {{ network_settings.home.subnet }} dev wg0; ip route add {{ network_settings.vpn.subnet }} dev wg0
+PostDown = ip route del {{ network_settings.home.subnet }} dev wg0; ip route del {{ network_settings.vpn.subnet }} dev wg0
+
+[Peer]
+PublicKey = {{ network_settings.vpn.public_key }}
+AllowedIPs = {{ network_settings.home.subnet }}, {{ network_settings.vpn.subnet }}
+Endpoint = {{ network_settings.vpn.endpoint }}
+PersistentKeepalive = {{ network_settings.vpn.persistent_keepalive }}
