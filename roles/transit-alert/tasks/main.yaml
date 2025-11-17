@@ -1,0 +1,26 @@
+---
+- name: Create Transit Alert directory
+  file:
+    path: /data/transit-alert
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: "0775"
+
+- name: Copy files
+  copy:
+    src: .
+    dest: /data/transit-alert/
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0664'
+
+- name: Start a Transit Alert container
+  docker_container:
+    name: transit-alert
+    image: kszakharov/transit-alert:latest
+    state: started
+    restart_policy: unless-stopped
+    hostname: "{{ ansible_hostname }}"
+    volumes:
+      - /data/transit-alert/config.yaml:/app/config.yaml

@@ -37,6 +37,8 @@
       tags: adguard
     - role: home-assistant
       tags: home-assistant
+    - role: transit-alert
+      tags: transit-alert
 - name: Deploy neon-specific components
   hosts: neon
   roles:
