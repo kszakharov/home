@@ -13,10 +13,9 @@
 - name: Start ollama container
   docker_container:
     name: ollama
-    image: ollama/ollama
+    image: ollama/ollama:latest
     state: started
     restart_policy: unless-stopped
-    memory: 8G
     volumes:
       - /data/ollama/data:/root/.ollama
     ports:
