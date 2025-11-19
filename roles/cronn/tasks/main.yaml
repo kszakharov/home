@@ -47,7 +47,7 @@
 - name: Start a cronn container
   docker_container:
     name: cronn
-    image: kszakharov/cronn:v1.7.1
+    image: kszakharov/cronn:v1.8.0
     restart_policy: unless-stopped
     volumes:
       - "{{ dir_data_app }}/crontab:/srv/crontab:ro"
@@ -58,6 +58,12 @@
       - "{{ dns }}"
     dns_search_domains:
       - home
+    expose:
+      - 8080
+    labels:
+      reproxy.dest: /cronn/$1
     env:
       TIME_ZONE: "{{ timezone }}"
       APP_UID: "{{ autouser.uid | string }}"
+      CRONN_WEB_ENABLED: "true"
+      CRONN_WEB_BASE_URL: "/cronn"
