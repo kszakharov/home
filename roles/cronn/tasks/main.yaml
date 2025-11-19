@@ -44,17 +44,10 @@
     group: "{{ autouser.name }}"
     mode: '0664'
 
-- name: Pull the latest version of Docker image
-  docker_image:
-    name: kszakharov/cronn
-    source: pull
-    force_source: true
-  register: image_pull
-
 - name: Start a cronn container
   docker_container:
     name: cronn
-    image: kszakharov/cronn
+    image: kszakharov/cronn:v1.7.1
     restart_policy: unless-stopped
     volumes:
       - "{{ dir_data_app }}/crontab:/srv/crontab:ro"
@@ -67,4 +60,4 @@
       - home
     env:
       TIME_ZONE: "{{ timezone }}"
-      APP_UID: "{{ autouser.uid }}"
+      APP_UID: "{{ autouser.uid | string }}"
