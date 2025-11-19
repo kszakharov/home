@@ -11,6 +11,14 @@
     group: "{{ autouser.name }}"
     mode: '0775'
 
+- name: Create database directory
+  file:
+    path: "{{ dir_data_app }}/db"
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0775'
+
 - name: Create scripts directory
   file:
     path: "{{ dir_data_app }}/scripts"
@@ -51,6 +59,7 @@
     restart_policy: unless-stopped
     volumes:
       - "{{ dir_data_app }}/crontab:/srv/crontab:ro"
+      - "{{ dir_data_app }}/db:/srv/db"
       - "{{ dir_data_app }}/scripts:/scripts"
       - /home/{{ autouser.name }}/.ssh/id_ed25519:/home/app/.ssh/id_ed25519:ro
       - /data_backup:/data_backup
@@ -67,3 +76,4 @@
       APP_UID: "{{ autouser.uid | string }}"
       CRONN_WEB_ENABLED: "true"
       CRONN_WEB_BASE_URL: "/cronn"
+      CRONN_WEB_DB_PATH: "/srv/db/cronn.db"
