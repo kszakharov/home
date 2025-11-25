@@ -55,7 +55,7 @@
 - name: Start a cronn container
   docker_container:
     name: cronn
-    image: kszakharov/cronn:v1.8.1
+    image: kszakharov/cronn:v1.9.0
     restart_policy: unless-stopped
     volumes:
       - "{{ dir_data_app }}/crontab:/srv/crontab:ro"
@@ -77,3 +77,4 @@
       CRONN_WEB_ENABLED: "true"
       CRONN_WEB_BASE_URL: "/cronn"
       CRONN_WEB_DB_PATH: "/srv/db/cronn.db"
+      CRONN_WEB_HOSTNAME: "{{ inventory_hostname }}"
