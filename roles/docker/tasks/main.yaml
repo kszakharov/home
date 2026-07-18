@@ -1,13 +1,24 @@
 ---
-- name: Add Docker GPG apt Key
-  apt_key:
-    url: https://download.docker.com/linux/{{ ansible_lsb.id | lower }}/gpg
-    state: present
+- name: Remove legacy docker apt repo file
+  file:
+    path: /etc/apt/sources.list.d/docker.list
+    state: absent
 
-- name: Add Docker Repository
-  apt_repository:
-    filename: docker
-    repo: deb [arch={{ apt_repo_arch }}] https://download.docker.com/linux/{{ ansible_lsb.id | lower }} {{ ansible_lsb.codename }} stable
+- name: Remove legacy docker apt key
+  apt_key:
+    url: https://download.docker.com/linux/{{ ansible_facts.lsb.id | lower }}/gpg
+    state: absent
+
+- name: Add Docker GPG apt key and repository
+  deb822_repository:
+    name: docker
+    types: deb
+    uris: "https://download.docker.com/linux/{{ ansible_facts.lsb.id | lower }}"
+    suites: "{{ ansible_facts.lsb.codename }}"
+    components: stable
+    architectures: "{{ apt_repo_arch }}"
+    signed_by: "https://download.docker.com/linux/{{ ansible_facts.lsb.id | lower }}/gpg"
+    install_python_debian: true
     state: present
 
 - name: Update apt and install docker-ce
