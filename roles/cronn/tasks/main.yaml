@@ -55,7 +55,7 @@
 - name: Start a cronn container
   docker_container:
     name: cronn
-    image: kszakharov/cronn:v1.9.0
+    image: kszakharov/cronn:v1.14.0
     restart_policy: unless-stopped
     volumes:
       - "{{ dir_data_app }}/crontab:/srv/crontab:ro"
