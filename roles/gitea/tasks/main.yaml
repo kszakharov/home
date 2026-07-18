@@ -1,0 +1,32 @@
+---
+- name: Create gitea directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0775'
+  loop:
+    - /data/gitea/data
+    - /data/gitea/config
+
+- name: Start a gitea container
+  docker_container:
+    name: gitea
+    image: gitea/gitea:1.27-rootless
+    restart_policy: unless-stopped
+    user: "{{ autouser.uid }}:{{ autouser.uid }}"
+    volumes:
+      - /data/gitea/data:/var/lib/gitea
+      - /data/gitea/config:/etc/gitea
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "8080:3000"
+      - "2222:2222"
+    labels:
+      reproxy.port: "3000"
+    env:
+      GITEA__server__ROOT_URL: "http://helium/gitea"
+      GITEA__repository__ENABLE_PUSH_CREATE_USER: "true"
+      GITEA__cron.update_mirrors__SCHEDULE: "@midnight"

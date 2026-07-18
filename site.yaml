@@ -39,6 +39,8 @@
       tags: home-assistant
     - role: transit-alert
       tags: transit-alert
+    - role: gitea
+      tags: gitea
 - name: Deploy neon-specific components
   hosts: neon
   roles:
