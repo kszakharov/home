@@ -19,6 +19,7 @@
   docker_container:
     name: reproxy
     image: umputun/reproxy:master
+    pull: always
     state: started
     restart_policy: unless-stopped
     ports:
@@ -27,6 +28,7 @@
       - /data/reproxy/web:/web
       - /var/run/docker.sock:/var/run/docker.sock:ro
     env:
+      DOCKER_API_VERSION: "1.40"
       TZ: "{{ timezone }}"
       DOCKER_ENABLED: "true"
       DOCKER_AUTO: "true"
