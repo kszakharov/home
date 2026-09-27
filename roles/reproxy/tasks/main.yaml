@@ -38,4 +38,7 @@
       KEEP_HOST: "true"
       HEADER:
         Access-Control-Allow-Origin:*
+      TIMEOUT_READ_HEADER: "120s"
+      TIMEOUT_RESP_HEADER: "120s"
+      MAX_SIZE: "16M"
   notify: Restart reproxy

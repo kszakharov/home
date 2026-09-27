@@ -1,0 +1,26 @@
+---
+- name: Create wealthfolio directory
+  file:
+    path: /data/wealthfolio
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: '0775'
+
+- name: Start a Wealthfolio container
+  docker_container:
+    name: wealthfolio
+    image: wealthfolio/wealthfolio:latest
+    restart_policy: unless-stopped
+    user: "{{ autouser.uid }}:{{ autouser.uid }}"
+    volumes:
+      - /data/wealthfolio:/data
+    labels:
+      reproxy.server: "wealthfolio.home"
+      reproxy.route: "^/(.*)"
+      reproxy.timeout: "5m"
+    env:
+      WF_DB_PATH: "/data/wealthfolio.db"
+      WF_SECRET_KEY: "{{ wf_secret_key }}"
+      WF_AUTH_PASSWORD_HASH: "{{ wf_auth_password_hash }}"
+      WF_CORS_ALLOW_ORIGINS: "http://wealthfolio.home"

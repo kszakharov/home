@@ -43,6 +43,8 @@
       tags: gitea
     - role: gitea-runner
       tags: gitea-runner
+    - role: wealthfolio
+      tags: wealthfolio
 - name: Deploy neon-specific components
   hosts: neon
   roles:

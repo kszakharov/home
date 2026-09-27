@@ -15,10 +15,11 @@ argon    IN  A  10.0.0.103
 krypton  IN  A  10.0.1.1
 xenon    IN  A  10.10.0.105
 
-home     IN  CNAME  helium
-mongo    IN  CNAME  helium
-zabbix   IN  CNAME  helium
-ha       IN  CNAME  helium
+home        IN  CNAME  helium
+mongo       IN  CNAME  helium
+zabbix      IN  CNAME  helium
+ha          IN  CNAME  helium
+wealthfolio IN  CNAME  helium
 
 ; PTR records for DNS-SD
 _dns-sd._udp  IN  PTR  db._dns-sd._udp.0.0.0.10.in-addr.arpa.
