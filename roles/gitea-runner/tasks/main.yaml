@@ -1,0 +1,57 @@
+---
+- name: Create gitea-runner directory
+  file:
+    path: /data/gitea-runner/data
+    state: directory
+    owner: "1000"
+    group: "1000"
+    mode: "0775"
+
+- name: Create gitea-runner files if missing
+  copy:
+    content: ""
+    dest: "{{ item }}"
+    owner: "1000"
+    group: "1000"
+    mode: "0644"
+    force: false
+  loop:
+    - /data/gitea-runner/config.yaml
+    - /data/gitea-runner/.runner
+
+- name: Copy Docker-in-Docker daemon.json configuration
+  template:
+    src: daemon.json.j2
+    dest: "/data/gitea-runner/daemon.json"
+    mode: "0644"
+
+
+- name: Start a gitea-runner container
+  docker_container:
+    name: gitea-runner
+    image: gitea/runner:2.1-dind-rootless  # act_runner:0.6-dind-rootless  # 0.2.6-dind-rootless
+    privileged: true  # required for Docker-in-Docker (dind)
+    security_opts:
+      - apparmor=rootlesskit
+    state: started
+    restart_policy: unless-stopped
+    dns_servers:
+      - "{{ dns }}"
+    dns_search_domains:
+      - home
+    volumes:
+      - /data/gitea-runner/data:/data
+      - /data/gitea-runner/config.yaml:/config.yaml
+      - /data/gitea-runner/.runner:/.runner
+      # - /data/gitea-runner/daemon.json:/home/rootless/.config/docker/daemon.json:ro
+      - /data/gitea-runner/daemon.json:/etc/docker/daemon.json:ro
+
+    env:
+      DOCKER_HOST: unix:///var/run/user/1000/docker.sock
+      DOCKERD_ROOTLESS_ROOTLESSKIT_NET: slirp4netns
+      DOCKERD_ROOTLESS_ROOTLESSKIT_MTU: "65520"
+      CONFIG_FILE: /config.yaml
+      GITEA_INSTANCE_URL: "http://helium/gitea"
+      GITEA_RUNNER_REGISTRATION_TOKEN: "{{ gitea_runner_registration_token }}"
+      GITEA_RUNNER_NAME: "{{ ansible_host }}"
+      GITEA_RUNNER_LABELS: "{{ ansible_facts.lsb.id | lower }}-latest:docker://node:lts-bookworm"

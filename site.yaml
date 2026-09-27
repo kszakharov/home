@@ -41,6 +41,8 @@
       tags: transit-alert
     - role: gitea
       tags: gitea
+    - role: gitea-runner
+      tags: gitea-runner
 - name: Deploy neon-specific components
   hosts: neon
   roles:
