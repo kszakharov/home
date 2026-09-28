@@ -41,6 +41,7 @@ users:
   - username: kszakharov
     comment: Kostiantyn Zakharov
     uid: 1000
+    shell: /bin/bash
     groups:
       - docker
       - home

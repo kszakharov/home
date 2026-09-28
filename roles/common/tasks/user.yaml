@@ -11,6 +11,7 @@
     uid: "{{ item.uid }}"
     groups: "{{ item.groups }}"
     append: true
+    shell: "{{ item.shell | default(omit) }}"
   with_items: "{{ users }}"
   when: item.active
   loop_control:
