@@ -3,3 +3,4 @@
   copy:
     src: aliases.sh
     dest: /etc/profile.d/aliases.sh
+    mode: "0644"
