@@ -1,6 +1,7 @@
 ---
 timezone: America/Toronto
 common_packages:
+  - bash-completion
   - ethtool
   - git
   - htop
