@@ -28,6 +28,23 @@
   loop_control:
     label: "{{ item.username }}"
 
+- name: Configure colored bash prompt for users
+  blockinfile:
+    path: "/home/{{ item.username }}/.bashrc"
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+    mode: "0644"
+    marker: "# {mark} ANSIBLE BASH PROMPT"
+    block: |
+      PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\e[32m\]\u@\h\[\e[0m\]:\[\e[34m\]\w\[\e[0m\]\$ '
+  with_items: "{{ users }}"
+  when:
+    - item.active
+    - item.shell is defined
+    - item.shell == "/bin/bash"
+  loop_control:
+    label: "{{ item.username }}"
+
 - name: Set up SSH public keys for users
   authorized_key:
     user: "{{ item.username }}"
