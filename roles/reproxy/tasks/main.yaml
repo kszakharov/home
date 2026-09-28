@@ -14,6 +14,7 @@
     owner: "{{ autouser.name }}"
     group: "{{ autouser.name }}"
     mode: '0664'
+  notify: Restart reproxy
 
 - name: Start a reproxy container
   docker_container:
@@ -46,4 +47,6 @@
       TIMEOUT_READ_HEADER: "120s"
       TIMEOUT_RESP_HEADER: "120s"
       MAX_SIZE: "16M"
+    labels:
+      reproxy.server: "{{ ansible_host }}"
   notify: Restart reproxy
