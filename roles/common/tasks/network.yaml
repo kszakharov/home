@@ -5,6 +5,23 @@
     state: present
   tags: dependencies
 
+- name: Create backup directory for configs
+  file:
+    path: /etc/netplan/backup/
+    state: directory
+    mode: "0755"
+
+- name: Find existing config files in /etc/netplan
+  find:
+    paths: /etc/netplan/
+    patterns: "*.yaml"
+  register: common_netplan_files
+
+- name: Move files to backup directory except config.yaml
+  command: mv "{{ item.path }}" /etc/netplan/backup/
+  when: item.path != "/etc/netplan/config.yaml"
+  loop: "{{ common_netplan_files.files }}"
+
 - name: Configure network settings using Netplan
   template:
     src: netplan_config.yaml.j2
