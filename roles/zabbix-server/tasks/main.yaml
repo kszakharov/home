@@ -10,7 +10,7 @@
 - name: Start a zabbix-server container
   docker_container:
     name: zabbix-server
-    image: zabbix/zabbix-server-pgsql:alpine-6.4-latest
+    image: zabbix/zabbix-server-pgsql:alpine-7.4-latest
     state: started
     restart_policy: unless-stopped
     network_mode: host

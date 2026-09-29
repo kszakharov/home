@@ -2,12 +2,16 @@
 - name: Start a zabbix-web container
   docker_container:
     name: zabbix-web
-    image: zabbix/zabbix-web-nginx-pgsql:alpine-6.4-latest
+    image: zabbix/zabbix-web-nginx-pgsql:alpine-7.4-latest
     state: started
     restart_policy: unless-stopped
     labels:
       reproxy.port: "8080"
       reproxy.route: ^/zabbix/(.*)
+    dns_servers:
+      - "{{ dns }}"
+    dns_search_domains:
+      - home
     env:
       ZBX_SERVER_HOST: "helium"
       DB_SERVER_HOST: "helium"
