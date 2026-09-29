@@ -3,3 +3,8 @@ default:
     dest: "http://127.0.0.1:8081/metrics"
   - route: "^/routes"
     dest: "http://127.0.0.1:8081/routes"
+
+home:
+  - route: "/"
+    dest: "/web"
+    assets: true

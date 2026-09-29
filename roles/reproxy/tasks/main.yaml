@@ -37,7 +37,7 @@
       MGMT_LISTEN: "127.0.0.1:8081"
       DOCKER_ENABLED: "true"
       DOCKER_AUTO: "true"
-      ASSETS_LOCATION: /web
+      ASSETS_LOCATION: /assets
       ASSETS_NOT_FOUND: 404.html
       FILE_ENABLED: "true"
       FILE_NAME: "/config.yaml"
