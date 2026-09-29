@@ -27,6 +27,7 @@
       - "80:8080"
     volumes:
       - /data/reproxy/config.yaml:/config.yaml
+      - /data/reproxy/assets:/assets
       - /data/reproxy/web:/web
       - /var/run/docker.sock:/var/run/docker.sock:ro
     env:
@@ -44,6 +45,8 @@
       KEEP_HOST: "true"
       HEADER:
         Access-Control-Allow-Origin:*
+      ERROR_ENABLED: "true"
+      ERROR_TEMPLATE: "/assets/error.html"
       TIMEOUT_READ_HEADER: "120s"
       TIMEOUT_RESP_HEADER: "120s"
       MAX_SIZE: "16M"
