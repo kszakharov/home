@@ -10,12 +10,12 @@
 - name: Start a grafana container
   docker_container:
     name: grafana
-    image: grafana/grafana
+    image: grafana/grafana:13.2.2-distroless
     state: started
     restart_policy: unless-stopped
     user: "{{ autouser.uid }}"
     volumes:
       - /data/grafana:/var/lib/grafana
     env:
-      GF_SERVER_ROOT_URL: http://{{ ansible_hostname }}/grafana
+      GF_SERVER_ROOT_URL: "http://{{ ansible_facts['hostname'] }}/grafana"
   notify: Restart reproxy
