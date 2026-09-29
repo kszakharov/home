@@ -6,7 +6,7 @@
     state: started
     restart_policy: unless-stopped
     privileged: true
-    hostname: "{{ ansible_hostname }}"
+    hostname: "{{ ansible_facts['hostname'] }}"
     network_mode: host
     ports:
       - 10050:10050
@@ -19,4 +19,4 @@
       reproxy.enabled: "false"
     env:
       ZBX_SERVER_HOST: "zabbix,127.0.0.1"
-      ZBX_HOSTNAME: "{{ ansible_hostname }}"
+      ZBX_HOSTNAME: "{{ ansible_facts['hostname'] }}"
