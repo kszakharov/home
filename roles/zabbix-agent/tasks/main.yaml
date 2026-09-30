@@ -17,6 +17,10 @@
       - "994"  # docker (Debian 12)
     labels:
       reproxy.enabled: "false"
+    dns_servers:
+      - "{{ dns }}"
+    dns_search_domains:
+      - home
     env:
       ZBX_SERVER_HOST: "zabbix,127.0.0.1"
       ZBX_HOSTNAME: "{{ ansible_facts['hostname'] }}"
