@@ -16,6 +16,10 @@
     user: "{{ autouser.uid }}"
     volumes:
       - /data/grafana:/var/lib/grafana
+    dns_servers:
+      - "{{ dns }}"
+    dns_search_domains:
+      - home
     env:
       GF_SERVER_ROOT_URL: "http://{{ ansible_facts['hostname'] }}/grafana"
   notify: Restart reproxy
