@@ -1,0 +1,32 @@
+---
+- name: Create prometheus directories
+  file:
+    path: /data/prometheus
+    state: directory
+    owner: "{{ autouser.name }}"
+    group: "{{ autouser.name }}"
+    mode: "0775"
+
+- name: Copy prometheus.yml
+  copy:
+    src: prometheus.yml
+    dest: /data/prometheus/prometheus.yml
+    mode: "0644"
+
+- name: Start a prometheus container
+  docker_container:
+    name: prometheus
+    image: prom/prometheus
+    state: started
+    restart_policy: unless-stopped
+    user: "{{ autouser.uid }}"
+    volumes:
+      - /data/prometheus:/prometheus
+    dns_servers:
+      - "{{ dns }}"
+    dns_search_domains:
+      - home
+    command:
+      - "--web.external-url=http://{{ ansible_facts['hostname'] }}/prometheus/"
+      - "--web.route-prefix=/"
+  notify: Restart reproxy

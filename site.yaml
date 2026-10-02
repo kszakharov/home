@@ -37,6 +37,8 @@
       tags: adguard
     - role: home-assistant
       tags: home-assistant
+    - role: prometheus
+      tags: prometheus
     - role: transit-alert
       tags: transit-alert
     - role: gitea
