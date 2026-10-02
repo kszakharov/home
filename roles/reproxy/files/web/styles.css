@@ -195,7 +195,7 @@ body {
 
 /* ---------- Route Explorer ---------- */
 
-/* Taller header with an action button on the right */
+/* Taller header */
 header.tall {
   display: flex;
   flex-wrap: wrap;
@@ -320,7 +320,6 @@ header.tall h1 {
   border-radius: 5px;
   color: #c0392b;
   font-size: 13px;
-  display: none;
 }
 
 /* Search */
@@ -350,7 +349,6 @@ header.tall h1 {
   box-shadow:
     0 0 0 2px #3498db,
     0 0 0 4px #ecf0f1;
-  transition: box-shadow 0.2s ease;
 }
 
 #search::-webkit-search-cancel-button {
@@ -396,6 +394,10 @@ header.tall h1 {
   display: none;
 }
 
+#search:not(:placeholder-shown)~#clear-search {
+  display: block;
+}
+
 #clear-search:hover {
   color: #333;
 }
@@ -430,7 +432,6 @@ header.tall h1 {
   white-space: nowrap;
   cursor: pointer;
   user-select: none;
-  transition: color 0.2s ease;
 }
 
 .table-card th:hover {
@@ -454,10 +455,6 @@ header.tall h1 {
   font-size: 13px;
 }
 
-.table-card tbody tr {
-  transition: background-color 0.15s ease;
-}
-
 .table-card tbody tr:last-child td {
   border-bottom: 0;
 }
@@ -467,9 +464,6 @@ header.tall h1 {
 }
 
 .server {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
   color: #2980b9;
   font-weight: 600;
   white-space: nowrap;
@@ -507,7 +501,6 @@ header.tall h1 {
   color: #666;
   font-size: 12px;
   opacity: 0;
-  transition: opacity 0.15s ease;
 }
 
 .table-card tbody tr:hover .copy-btn,
@@ -556,7 +549,6 @@ mark {
   background: rgba(0, 0, 0, 0.08);
   color: #666;
   cursor: pointer;
-  transition: filter 0.15s ease;
 }
 
 .badge:hover {
@@ -581,34 +573,6 @@ mark {
 .badge.file {
   color: #b9770e;
   background: rgba(243, 156, 18, 0.18);
-}
-
-/* Loading skeleton */
-.loading {
-  padding: 14px 0;
-}
-
-.skeleton-row {
-  height: 14px;
-  margin: 20px;
-  border-radius: 5px;
-  background: linear-gradient(90deg, #d5dbdb 25%, #e6eaeb 50%, #d5dbdb 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.2s infinite linear;
-}
-
-.skeleton-row:nth-child(2n) {
-  width: 85%;
-}
-
-.skeleton-row:nth-child(3n) {
-  width: 70%;
-}
-
-@keyframes shimmer {
-  to {
-    background-position: -200% 0;
-  }
 }
 
 /* Toast */
@@ -659,6 +623,17 @@ mark {
 
   .refresh-action {
     padding: 12px 24px;
+  }
+}
+
+/* Wide screens: Home leaves the chip row and lines up with the left edge of
+   .explorer (max-width 1500px, centered); the other chips stay centered. */
+@media (min-width: 1300px) {
+  .home {
+    position: absolute;
+    top: -10px;
+    left: max(0px, calc((100% - 1500px) / 2));
+    margin: 0;
   }
 }
 
