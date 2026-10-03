@@ -17,4 +17,3 @@ common_packages:
   - vim
 
 useless_packages:
-  - iperf3
