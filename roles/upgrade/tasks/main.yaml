@@ -1,0 +1,79 @@
+---
+- name: Read installed release codename
+  shell: . /etc/os-release && echo "$VERSION_CODENAME"
+  register: upgrade_installed_release
+  changed_when: false
+  check_mode: false
+
+- name: Upgrade packages within the current release
+  apt:
+    update_cache: true
+    upgrade: dist
+    autoremove: true
+    lock_timeout: 300
+
+- name: Upgrade to the release set in the inventory ({{ os_codename }})
+  when: upgrade_installed_release.stdout != os_codename
+  block:
+    - name: Install do-release-upgrade (Ubuntu)
+      apt:
+        name: update-manager-core
+        lock_timeout: 300
+      when: ansible_facts.distribution == 'Ubuntu'
+
+    - name: Run release upgrade (Ubuntu)
+      command: do-release-upgrade -m server -f DistUpgradeViewNonInteractive
+      async: 7200
+      poll: 30
+      changed_when: true
+      when: ansible_facts.distribution == 'Ubuntu'
+
+    - name: Find apt source files (Debian/Raspbian)
+      find:
+        paths: /etc/apt
+        patterns: ["*.list", "*.sources"]
+        recurse: true
+      register: upgrade_apt_sources
+      when: ansible_facts.distribution != 'Ubuntu'
+
+    - name: Point apt sources to the new release (Debian/Raspbian)
+      replace:
+        path: "{{ item.path }}"
+        regexp: '\b{{ upgrade_installed_release.stdout }}\b'
+        replace: "{{ os_codename }}"
+      loop: "{{ upgrade_apt_sources.files }}"
+      loop_control:
+        label: "{{ item.path }}"
+      when: ansible_facts.distribution != 'Ubuntu'
+
+    - name: Minimal upgrade to the new release (Debian/Raspbian)
+      apt:
+        update_cache: true
+        upgrade: safe
+        lock_timeout: 300
+      async: 7200
+      poll: 30
+      when: ansible_facts.distribution != 'Ubuntu'
+
+    - name: Full upgrade to the new release (Debian/Raspbian)
+      apt:
+        upgrade: dist
+        autoremove: true
+        lock_timeout: 300
+      async: 7200
+      poll: 30
+      when: ansible_facts.distribution != 'Ubuntu'
+
+- name: Check if a reboot is required
+  stat:
+    path: /var/run/reboot-required
+  register: upgrade_reboot_file
+
+- name: Reboot
+  reboot:
+    reboot_timeout: 1200
+  when: upgrade_reboot_file.stat.exists or upgrade_installed_release.stdout != os_codename
+
+- name: Refresh cached facts after release upgrade
+  setup:
+  when: upgrade_installed_release.stdout != os_codename

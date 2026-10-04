@@ -2,6 +2,7 @@
 servers:
   hosts:
     helium:
+      os_codename: noble
       apt_repo_arch: amd64
       networks:
         home:
@@ -12,6 +13,7 @@ servers:
             - "{{ dns }}"
           dev: home
     neon:
+      os_codename: bookworm
       apt_repo_arch: arm64
       networks:
         home_wifi:
@@ -21,6 +23,7 @@ servers:
             - 10.0.0.102
           dev: wlan0
     xenon:
+      os_codename: noble
       apt_repo_arch: amd64
       cloud_init: true
       networks:

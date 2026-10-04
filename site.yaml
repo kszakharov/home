@@ -1,4 +1,10 @@
 ---
+- name: Upgrade operating system
+  hosts: servers
+  serial: 1
+  roles:
+    - role: upgrade
+      tags: [upgrade, never]
 - name: Deploy common components
   hosts: servers
   roles:
