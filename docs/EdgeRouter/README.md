@@ -168,3 +168,71 @@ exit
     commit
     save
     ```
+
+## Monitoring (Prometheus + Grafana)
+
+The EdgeRouter X (MIPS little-endian) runs the official `node_exporter` build, which exposes load average, CPU, memory, per-interface traffic, and conntrack metrics to Prometheus.
+
+1. Download and install `node_exporter`
+
+    The binary is about 20 MB, so check the free space with `df -h /config` first.
+
+    ```bash
+    # get the latest release version
+    VER=$(curl -sI https://github.com/prometheus/node_exporter/releases/latest | grep -i ^location | grep -o 'v[0-9.]*' | sed s/^v//)
+    echo $VER
+
+    cd /tmp
+    curl -sL -o ne.tar.gz https://github.com/prometheus/node_exporter/releases/download/v${VER}/node_exporter-${VER}.linux-mipsle.tar.gz
+    tar xzf ne.tar.gz
+
+    # /config/user-data survives firmware upgrades
+    sudo mkdir -p /config/user-data/node_exporter
+    sudo cp node_exporter-${VER}.linux-mipsle/node_exporter /config/user-data/node_exporter/
+    rm -rf ne.tar.gz node_exporter-*
+    ```
+
+2. Start it on boot
+
+    Scripts in `/config/scripts/post-config.d` run after every boot and survive firmware upgrades. The exporter listens on the LAN address only, so it is not reachable from the WAN side (no firewall rules are configured here).
+
+    ```bash
+    sudo tee /config/scripts/post-config.d/node_exporter.sh >/dev/null <<'EOF'
+    #!/bin/bash
+    pgrep -x node_exporter >/dev/null || \
+      nohup /config/user-data/node_exporter/node_exporter \
+        --web.listen-address=10.0.1.1:9100 >/dev/null 2>&1 &
+    EOF
+    sudo chmod +x /config/scripts/post-config.d/node_exporter.sh
+
+    # start it now
+    sudo /config/scripts/post-config.d/node_exporter.sh
+    ```
+
+3. Verify
+
+    ```bash
+    curl -s 10.0.1.1:9100/metrics | grep node_load
+    ```
+
+4. Add the scrape job to Prometheus
+
+    ```yaml
+    scrape_configs:
+      - job_name: edgerouter
+        static_configs:
+          - targets: ['krypton:9100']
+            labels:
+              instance: krypton
+    ```
+
+    Reload Prometheus, then check that the target is `UP` under Status → Targets.
+
+5. Import the dashboard in Grafana
+
+    Dashboards → Import → ID `1860` (Node Exporter Full) → select the Prometheus data source → select `krypton` as the instance.
+
+Notes:
+
+- With hardware offload enabled, offloaded flows bypass the kernel, so interface counters and CPU load may undercount real traffic.
+- To update `node_exporter`, stop it with `sudo pkill node_exporter`, repeat step 1, then re-run the boot script from step 2.

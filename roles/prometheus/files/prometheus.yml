@@ -13,3 +13,8 @@ scrape_configs:
         - helium
         - neon
         - xenon
+  - job_name: edgerouter
+    static_configs:
+      - targets: ['krypton:9100']
+        labels:
+          instance: krypton
