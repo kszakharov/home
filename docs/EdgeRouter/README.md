@@ -3,16 +3,22 @@
 ## Initial Set Up
 
 1. Connect an Ethernet cable from a computer to the `eth0` interface on the EdgeRouter
+
 2. Configure a static IP address on your computer in the 192.168.1.0/24 range (for example 192.168.1.11)
+
     ```bash
     sudo ip addr add 192.168.1.11/24 dev eth0
     sudo ip link set eth0 up
     ```
+
 3. Connect using the username `ubnt` and the password `ubnt`
+
     ```bash
     ssh ubnt@192.168.1.1
     ```
+
 4. Create a new user
+
     ```bash
     configure
 
@@ -30,11 +36,15 @@
     save
     exit
     ```
+
 5. Reconnect using the new user
+
     ```bash
     ssh 192.168.1.1
     ```
+
 6. Disable password authentication for SSH
+
     ```bash
     configure
 
@@ -44,7 +54,9 @@
     save
     exit
     ```
+
 7. Remove the default user
+
     ```bash
     configure
 
@@ -68,14 +80,19 @@ exit
 ```
 
 1. Set the hostname
+
     ```bash
     set system host-name <host-name>
     ```
+
 2. Set the timezone
+
     ```bash
     set system time-zone America/Toronto
     ```
+
 3. Base network configuration
+
     ```bash
     # WAN interface
     set interfaces ethernet eth0 address dhcp
@@ -92,19 +109,26 @@ exit
     # MGMT interface
     set interfaces ethernet eth4 address 192.168.1.1/24
     ```
+
 4. Connect `eth0` to the Internet and `eth1` to the downstream router's WAN interface
+
 5. Reconnect using the new address
+
     ```bash
     ssh 10.0.1.1
     ```
+
 6. Configure services to listen only on local interfaces
+
     ```bash
     set service gui listen-address 10.0.1.1
     set service gui listen-address 192.168.1.1
     set service ssh listen-address 10.0.1.1
     set service ssh listen-address 192.168.1.1
     ```
+
 7. Configure NAT masquerading
+
     ```bash
     set service nat rule 5001 description NAT
     set service nat rule 5001 log disable
@@ -117,15 +141,20 @@ exit
 ## WireGuard Setup
 
 1. Download and install WireGuard
+
     ```bash
     curl -qLs https://github.com/WireGuard/wireguard-vyatta-ubnt/releases/download/1.0.20220627-1/e50-v2-v1.0.20220627-v1.0.20210914.deb -o wireguard.deb
     sudo dpkg -i wireguard.deb
     ```
+
 2. Generate WireGuard keypair
+
     ```bash
     wg genkey | tee /dev/tty | wg pubkey
     ```
+
 3. Configure WireGuard interface
+
     ```bash
     configure
 
