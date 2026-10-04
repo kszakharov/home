@@ -1,15 +1,14 @@
-
 # EdgeRouter
 
 ## Initial Set Up
 
-1. Connect an Ethernet cable from a computer to the eth0 interface on the EdgeRouter.
-2. Configure a static IP address on your computer in the 192.168.1.0/24 range (for example 192.168.1.11).
+1. Connect an Ethernet cable from a computer to the `eth0` interface on the EdgeRouter
+2. Configure a static IP address on your computer in the 192.168.1.0/24 range (for example 192.168.1.11)
     ```bash
     sudo ip addr add 192.168.1.11/24 dev eth0
     sudo ip link set eth0 up
     ```
-3. Connect using the username `ubnt` and the password `ubnt`.
+3. Connect using the username `ubnt` and the password `ubnt`
     ```bash
     ssh ubnt@192.168.1.1
     ```
@@ -68,11 +67,11 @@ save
 exit
 ```
 
-1. Set the Hostname
+1. Set the hostname
     ```bash
     set system host-name <host-name>
     ```
-2. Set the Timezone
+2. Set the timezone
     ```bash
     set system time-zone America/Toronto
     ```
@@ -93,7 +92,7 @@ exit
     # MGMT interface
     set interfaces ethernet eth4 address 192.168.1.1/24
     ```
-4. Connect `eth`0 to the Internet and `eth1` to the downstream router's WAN interface
+4. Connect `eth0` to the Internet and `eth1` to the downstream router's WAN interface
 5. Reconnect using the new address
     ```bash
     ssh 10.0.1.1
@@ -122,19 +121,21 @@ exit
     curl -qLs https://github.com/WireGuard/wireguard-vyatta-ubnt/releases/download/1.0.20220627-1/e50-v2-v1.0.20220627-v1.0.20210914.deb -o wireguard.deb
     sudo dpkg -i wireguard.deb
     ```
-2. Generate WireGuard Keypair
+2. Generate WireGuard keypair
     ```bash
     wg genkey | tee /dev/tty | wg pubkey
     ```
-3.  Configure WireGuard Interface
+3. Configure WireGuard interface
     ```bash
     configure
+
     set interfaces wireguard wg0 address 10.10.0.1/24
     set interfaces wireguard wg0 listen-port 51820
     set interfaces wireguard wg0 route-allowed-ips true
     set protocols static interface-route 10.10.0.0/24 next-hop-interface wg0
     set interfaces wireguard wg0 private-key <server_pivate_key>
     set interfaces wireguard wg0 peer <client_public_key> allowed-ips 10.10.0.0/24
+
     commit
     save
     ```
