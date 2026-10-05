@@ -14,18 +14,14 @@
 
 - name: Upgrade to the release set in the inventory ({{ os_codename }})
   when: upgrade_installed_release.stdout != os_codename
+  vars:
+    upgrade_log: /var/log/release-upgrade-ansible.log
+    upgrade_rc: /var/log/release-upgrade-ansible.rc
   block:
     - name: Install do-release-upgrade (Ubuntu)
       apt:
         name: update-manager-core
         lock_timeout: 300
-      when: ansible_facts.distribution == 'Ubuntu'
-
-    - name: Run release upgrade (Ubuntu)
-      command: do-release-upgrade -m server -f DistUpgradeViewNonInteractive
-      async: 7200
-      poll: 30
-      changed_when: true
       when: ansible_facts.distribution == 'Ubuntu'
 
     - name: Find apt source files (Debian/Raspbian)
@@ -46,23 +42,52 @@
         label: "{{ item.path }}"
       when: ansible_facts.distribution != 'Ubuntu'
 
-    - name: Minimal upgrade to the new release (Debian/Raspbian)
-      apt:
-        update_cache: true
-        upgrade: safe
-        lock_timeout: 300
+    - name: Remove old upgrade exit code marker
+      file:
+        path: "{{ upgrade_rc }}"
+        state: absent
+
+    # The upgrade runs detached and writes its own exit code to a marker file.
+    # Ansible only polls that file with short tasks, so nothing long-lived on
+    # the host has to survive Python being upgraded underneath it.
+    - name: Start release upgrade (Ubuntu)
+      shell: |
+        do-release-upgrade -m server -f DistUpgradeViewNonInteractive > {{ upgrade_log }} 2>&1 < /dev/null
+        echo $? > {{ upgrade_rc }}
       async: 7200
-      poll: 30
+      poll: 0
+      changed_when: true
+      when: ansible_facts.distribution == 'Ubuntu'
+
+    - name: Start release upgrade (Debian/Raspbian)
+      shell: |
+        export DEBIAN_FRONTEND=noninteractive
+        {
+          apt-get update &&
+          apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold upgrade &&
+          apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold dist-upgrade &&
+          apt-get -y autoremove
+        } > {{ upgrade_log }} 2>&1 < /dev/null
+        echo $? > {{ upgrade_rc }}
+      async: 7200
+      poll: 0
+      changed_when: true
       when: ansible_facts.distribution != 'Ubuntu'
 
-    - name: Full upgrade to the new release (Debian/Raspbian)
-      apt:
-        upgrade: dist
-        autoremove: true
-        lock_timeout: 300
-      async: 7200
-      poll: 30
-      when: ansible_facts.distribution != 'Ubuntu'
+    - name: Wait for release upgrade to finish
+      stat:
+        path: "{{ upgrade_rc }}"
+      register: upgrade_rc_file
+      until: upgrade_rc_file.stat.exists | default(false)
+      retries: 240
+      delay: 30
+      ignore_unreachable: true
+
+    - name: Read release upgrade exit code
+      command: cat {{ upgrade_rc }}
+      register: upgrade_exit_code
+      changed_when: false
+      failed_when: upgrade_exit_code.stdout | trim != '0'
 
 - name: Check if a reboot is required
   stat:
@@ -73,6 +98,19 @@
   reboot:
     reboot_timeout: 1200
   when: upgrade_reboot_file.stat.exists or upgrade_installed_release.stdout != os_codename
+
+- name: Read release codename after upgrade
+  shell: . /etc/os-release && echo "$VERSION_CODENAME"
+  register: upgrade_final_release
+  changed_when: false
+  check_mode: false
+  when: upgrade_installed_release.stdout != os_codename
+
+- name: Fail if the release did not change
+  assert:
+    that: upgrade_final_release.stdout == os_codename
+    fail_msg: "Expected {{ os_codename }} but the host is on {{ upgrade_final_release.stdout }}"
+  when: upgrade_installed_release.stdout != os_codename
 
 - name: Refresh cached facts after release upgrade
   setup:
