@@ -20,8 +20,8 @@
       - 8123
     env:
       TZ: "{{ timezone }}"
-      PUID: "{{ autouser.uid }}"
-      PGID: "{{ autouser.uid }}"
+      PUID: "{{ autouser.uid | string }}"
+      PGID: "{{ autouser.uid | string }}"
       UMASK: "007"
     labels:
       reproxy.server: "ha.home"
