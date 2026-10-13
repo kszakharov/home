@@ -7,13 +7,13 @@
 
 - name: Create WireGuard configuration
   template:
-    src: wg0.conf.j2
-    dest: /etc/wireguard/wg0.conf
+    src: wg.conf.j2
+    dest: /etc/wireguard/{{ networks.vpn.dev }}.conf
     mode: "0600"
   notify: Restart WireGuard
 
 - name: Enable WireGuard service
   systemd_service:
-    name: wg-quick@wg0
+    name: wg-quick@{{ networks.vpn.dev }}
     enabled: true
     state: started

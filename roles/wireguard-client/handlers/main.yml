@@ -1,5 +1,5 @@
 ---
 - name: Restart WireGuard
   systemd_service:
-    name: wg-quick@wg0
+    name: wg-quick@{{ networks.vpn.dev }}
     state: restarted
